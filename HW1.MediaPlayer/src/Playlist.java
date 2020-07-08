@@ -108,8 +108,10 @@ public class Playlist {
 
 
     public void printAllSongs(){
+        System.out.println(String.format("%-11s%-17s%10s%16s", "Song#", "Title", "Artist", "Length"));
+        System.out.println("--------------------------------------------------------");
         for(int i = 0;i<size();i++){
-            System.out.print(i+1+". ");
+            System.out.print(i+1);
             playlist[i].toString();
         }
     }

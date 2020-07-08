@@ -60,7 +60,7 @@ public class SongRecord {
     }
     @Override
     public String toString(){
-        System.out.println(String.format("%-21s%-20s%10d:%02d", title, artist, minutes, seconds));
+        System.out.println(String.format("%-10s%-21s%-13s%5d:%02d","", title, artist, minutes, seconds));
         return null;
     }
 

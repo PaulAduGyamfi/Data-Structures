@@ -46,7 +46,7 @@ public class PlaylistOperations {
                        System.out.println("Song Added: "+new_song.getTitle()+" By "+new_song.getArtist());
 
                    }catch (IllegalArgumentException e){
-                       System.out.println("That position is not within the valid range!");
+                       System.out.println("Invalid position for adding the new song.");
                    }catch (FullPlaylistException f){
                        System.out.println("There is no more room inside the Playlist to store this song!");
                    }
@@ -106,6 +106,8 @@ public class PlaylistOperations {
             menu_option = menu_input.next().charAt(0);
 
        }
+
+        System.out.println("Program terminating normally...");
 
     }
 }
