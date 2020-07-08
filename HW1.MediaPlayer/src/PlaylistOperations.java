@@ -18,8 +18,7 @@ public class PlaylistOperations {
 
         System.out.print("Select a menu option:");
         char menu_option = menu_input.next().charAt(0);
-
-
+        
         while (menu_option != 'Q'){
 
            switch (menu_option){
@@ -76,9 +75,9 @@ public class PlaylistOperations {
                case 'R':
                    System.out.print("Enter the position: ");
                    int remove_song_at_position = menu_input.nextInt();
-                   System.out.println("Song Removed at position "+ remove_song_at_position);
                    try {
                        my_playlist.removeSong(remove_song_at_position);
+                       System.out.println("Song Removed at position "+ remove_song_at_position);
                    }catch (IllegalArgumentException e){
                        System.out.println("No song was found");
                    }

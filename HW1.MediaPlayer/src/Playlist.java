@@ -1,7 +1,13 @@
-public class Playlist {
+/**
+ * This class represents a playlist which has songRecord objects
+ *
+ * @author Paul Adu-Gyamfi
+ */
+public class Playlist implements Cloneable{
         private final SongRecord playlist[];
         private int max_songs;
         private int songs_currently_in_playlist;
+
 
     public Playlist() {
         playlist = new SongRecord[50];
@@ -9,21 +15,32 @@ public class Playlist {
         songs_currently_in_playlist = 0;
     }
 
-    //    @Override
+
 //    public Object clone(){
-//        SongRecord[] newList = new SongRecord[playlist.length];
-//        for(int i = 0; i < playlist.length; i++){
-//            newList[i] = playlist[i];
-//        }
-//        return newList;
+//        SongRecord playlist_copy = new SongRecord();
 //    }
+
+    /**
+     *
+     * @return
+     */
     public int size(){
-       int size = 0;
-       while(size < songs_currently_in_playlist){
-           size++;
-       }
-       return size;
+
+       return songs_currently_in_playlist;
     }
+
+
+    /**
+     *
+     * @param song
+     * song object to be added
+     * @param position
+     * position in playlist to add the song object
+     * @throws IllegalArgumentException
+     * when trying to add a song to a position that is not in the valid range
+     * @throws FullPlaylistException
+     * when trying to add a song to a playlist that is full
+     */
     public void addSong(SongRecord song, int position) throws IllegalArgumentException,FullPlaylistException{
         if (position > songs_currently_in_playlist+1 || position < 1){
             throw new IllegalArgumentException();
@@ -47,6 +64,13 @@ public class Playlist {
     }
 
 
+    /**
+     *
+     * @param position
+     * position in the playlist of song to be removed
+     * @throws IllegalArgumentException
+     * when the position is not in the valid range
+     */
     public void removeSong(int position) throws IllegalArgumentException{
         if(position > songs_currently_in_playlist || position < 1){
             System.out.println("That position is not within the valid range!");
@@ -63,6 +87,17 @@ public class Playlist {
 
     }
 
+
+    /**
+     *
+     * @param position
+     * position of the song in the playlist
+     * @return
+     * the song at the specified position in the playlist
+     * @throws IllegalArgumentException
+     * when the position is not in the valid range
+     *
+     */
     public SongRecord getSong(int position) throws IllegalArgumentException{
         if(position > songs_currently_in_playlist || position < 1){
             System.out.println("That position is not within the valid range!");
@@ -78,6 +113,18 @@ public class Playlist {
         return playlist[i];
     }
 
+
+    /**
+     *
+     * @param originalList
+     * playlist containg all the original songs by different artists
+     * @param artist
+     * artist to search by
+     * @return
+     * a playlist of songs by the specified artist
+     * @throws FullPlaylistException
+     * if the playlist is full
+     */
     public static Playlist getSongsByArtist(Playlist originalList, String artist) throws FullPlaylistException {
         Playlist songs_by_artist = new Playlist();
         int song_position = 1;
@@ -92,17 +139,11 @@ public class Playlist {
         return null;
     }
 
-//    @Override
 //    public boolean equals(Object obj){
 //
-//        if(obj.equals(null)){
-//            return false;
-//        }
-//        int i = 0;
-//        while( i != 0){
-//            if(obj){
-//                return false;
-//            }
+//        if(obj instanceof SongRecord){
+//            SongRecord new_playlist = (SongRecord) obj;
+//
 //        }
 //    }
 
