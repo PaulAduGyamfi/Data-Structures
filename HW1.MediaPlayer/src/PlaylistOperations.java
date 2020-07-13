@@ -1,4 +1,13 @@
 import java.util.Scanner;
+
+/**
+ * Paul Adu-Gyamfi
+ * #111607347
+ * paul.adu-gyamfi@stonybrook.edu
+ *
+ * CSE 214.R30
+ * Juan Tarquino
+ */
 public class PlaylistOperations {
     public static void main(String[] args) throws FullPlaylistException {
 
@@ -79,7 +88,7 @@ public class PlaylistOperations {
                        my_playlist.removeSong(remove_song_at_position);
                        System.out.println("Song Removed at position "+ remove_song_at_position);
                    }catch (IllegalArgumentException e){
-                       System.out.println("No song was found");
+                       System.out.println("No song at position "+remove_song_at_position +" to remove");
                    }
                    break;
                case 'P':

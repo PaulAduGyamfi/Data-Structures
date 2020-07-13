@@ -4,8 +4,8 @@
  * @author Paul Adu-Gyamfi
  */
 public class Playlist implements Cloneable{
-        private final SongRecord playlist[];
-        private int max_songs;
+        private final SongRecord[] playlist;
+        private final int max_songs;
         private int songs_currently_in_playlist;
 
 
@@ -16,8 +16,18 @@ public class Playlist implements Cloneable{
     }
 
 
-//    public Object clone(){
-//        SongRecord playlist_copy = new SongRecord();
+//    public Object clone() throws CloneNotSupportedException {
+//        Playlist playlist_copy = new Playlist();
+//            for(int i=0; i< size(); i++){
+//                playlist_copy.getSong(i).setArtist(playlist[i].getArtist());
+//                playlist_copy.getSong(i).setTitle(playlist[i].getTitle());
+//                playlist_copy.getSong(i).setMinutes(playlist[i].getMinutes());
+//                playlist_copy.getSong(i).setSeconds(playlist[i].getSeconds());
+//
+//                playlist_copy.getSong(i).toString();
+//            }
+//
+//        return playlist_copy;
 //    }
 
     /**
@@ -25,7 +35,6 @@ public class Playlist implements Cloneable{
      * @return
      */
     public int size(){
-
        return songs_currently_in_playlist;
     }
 
@@ -73,7 +82,6 @@ public class Playlist implements Cloneable{
      */
     public void removeSong(int position) throws IllegalArgumentException{
         if(position > songs_currently_in_playlist || position < 1){
-            System.out.println("That position is not within the valid range!");
             throw new IllegalArgumentException();
         }
         playlist[position-1] = null;
@@ -100,17 +108,10 @@ public class Playlist implements Cloneable{
      */
     public SongRecord getSong(int position) throws IllegalArgumentException{
         if(position > songs_currently_in_playlist || position < 1){
-            System.out.println("That position is not within the valid range!");
             throw new IllegalArgumentException();
         }
-        if(position == 1){
-            return playlist[0];
-        }
-        int i = 0;
-        while(i<position){
-            i++;
-        }
-        return playlist[i];
+
+        return playlist[position-1];
     }
 
 
@@ -139,13 +140,39 @@ public class Playlist implements Cloneable{
         return null;
     }
 
-//    public boolean equals(Object obj){
-//
-//        if(obj instanceof SongRecord){
-//            SongRecord new_playlist = (SongRecord) obj;
-//
-//        }
-//    }
+
+    /**
+     *
+     * @param obj
+     * new playlist to compare to the original playlist
+     * @return
+     * a boolean value of true if the playlist have same songs or false otherwise
+     */
+    public boolean equals(Object obj){
+        if(obj instanceof Playlist){
+            Playlist new_playlist = (Playlist) obj;
+            if(new_playlist.songs_currently_in_playlist != songs_currently_in_playlist){
+                return false;
+            }
+            for(int i = 0; i<songs_currently_in_playlist; i++){
+                if(!playlist[i].getArtist().equals(new_playlist.getSong(i+1).getArtist())){
+                    return false;
+                }
+                if(!playlist[i].getTitle().equals(new_playlist.getSong(i+1).getTitle())){
+                    return false;
+                }
+                if(playlist[i].getMinutes() != new_playlist.getSong(i+1).getMinutes()){
+                    return false;
+                }
+                if(playlist[i].getSeconds() != new_playlist.getSong(i+1).getSeconds()){
+                    return false;
+                }
+            }
+            return true;
+
+        }
+        return false;
+    }
 
 
     public void printAllSongs(){

@@ -1,8 +1,9 @@
 /**
- * This class represents a song object which has a song title, artist, song length of minutes, ans song length of seconds
+ * This class represents a song object which has a song title, artist, song length of minutes, and song length of seconds
  *
  * @author Paul Adu-Gyamfi
  */
+
 public class SongRecord {
 
     private String title;
