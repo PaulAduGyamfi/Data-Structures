@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -57,6 +58,8 @@ public class PlaylistOperations {
                        System.out.println("Invalid position for adding the new song.");
                    }catch (FullPlaylistException f){
                        System.out.println("There is no more room inside the Playlist to store this song!");
+                   }catch (IndexOutOfBoundsException o){
+                       System.out.println("Invalid song length.");
                    }
                    break;
                case 'B':

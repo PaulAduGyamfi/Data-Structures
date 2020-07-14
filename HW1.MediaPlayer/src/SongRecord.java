@@ -32,8 +32,8 @@ public class SongRecord {
     public SongRecord(String title, String artist, int minutes, int seconds){
         this.title = title;
         this.artist = artist;
-        this.minutes = minutes;
-        this.seconds = seconds;
+        setMinutes(minutes);
+        setSeconds(seconds);
     }
 
     /**
