@@ -30,7 +30,7 @@ public class PlaylistOperations {
         
         while (menu_option != 'Q'){
 
-           switch (menu_option){
+           switch (Character.toUpperCase(menu_option)){
                case 'A':
                    System.out.print("Enter the song title: ");
                    menu_input.nextLine();
@@ -76,6 +76,9 @@ public class PlaylistOperations {
                    System.out.print("Enter the position: ");
                    int get_song_by_position = menu_input.nextInt();
                    try {
+                       System.out.println(String.format("%-11s%-17s%10s%16s", "Song#", "Title", "Artist", "Length"));
+                       System.out.println("--------------------------------------------------------");
+                       System.out.print("1");
                        my_playlist.getSong(get_song_by_position).toString();
                    }catch (IllegalArgumentException e){
                        System.out.println("No song was found");

@@ -15,24 +15,33 @@ public class Playlist implements Cloneable{
         songs_currently_in_playlist = 0;
     }
 
+    /**
+     *
+     * @return
+     * a copy of the playlist
+     * @throws CloneNotSupportedException
+     * if playlist cannot be cloned
+     */
+    public Object clone() throws CloneNotSupportedException {
+        Playlist playlist_copy = (Playlist) super.clone();
 
-//    public Object clone() throws CloneNotSupportedException {
-//        Playlist playlist_copy = new Playlist();
-//            for(int i=0; i< size(); i++){
-//                playlist_copy.getSong(i).setArtist(playlist[i].getArtist());
-//                playlist_copy.getSong(i).setTitle(playlist[i].getTitle());
-//                playlist_copy.getSong(i).setMinutes(playlist[i].getMinutes());
-//                playlist_copy.getSong(i).setSeconds(playlist[i].getSeconds());
-//
-//                playlist_copy.getSong(i).toString();
-//            }
-//
-//        return playlist_copy;
-//    }
+            for(int i = 1; i < size(); i++){
+                playlist_copy.getSong(i).setArtist(playlist[i-1].getArtist());
+                playlist_copy.getSong(i).setTitle(playlist[i-1].getTitle());
+                playlist_copy.getSong(i).setMinutes(playlist[i-1].getMinutes());
+                playlist_copy.getSong(i).setSeconds(playlist[i-1].getSeconds());
+
+            }
+            playlist_copy.printAllSongs();
+
+        return playlist_copy;
+    }
+
 
     /**
      *
      * @return
+     * the size of the playlist
      */
     public int size(){
        return songs_currently_in_playlist;
