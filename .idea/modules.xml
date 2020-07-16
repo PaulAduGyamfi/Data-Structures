@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Data-Structures.iml" filepath="$PROJECT_DIR$/Data-Structures.iml" />
       <module fileurl="file://$PROJECT_DIR$/HW1.MediaPlayer/HW1.MediaPlayer.iml" filepath="$PROJECT_DIR$/HW1.MediaPlayer/HW1.MediaPlayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Practice/Practice.iml" filepath="$PROJECT_DIR$/Practice/Practice.iml" />
     </modules>
   </component>
 </project>
