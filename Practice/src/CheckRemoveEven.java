@@ -10,6 +10,17 @@ public class CheckRemoveEven {
     }
 
     public static int[] removeEven(int[] arr){
+
+        /*
+			1. Iterate through the array to find the number of odd integers
+			2. Initialize new int array for odd integers
+			3. Iterate through array again and add the odd integers to new array
+			4. Return new array
+
+			Time complexity: O(n)
+		*/
+
+
         int num_of_odd = 0;
         for (int value : arr) {
             if (value % 2 != 0) {
