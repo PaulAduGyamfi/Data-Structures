@@ -8,7 +8,7 @@ public class CheckSum {
         *       b. If pointerB == arr.length-1
         *           i. if true pointerA++
         *           ii. pointerB = pointerA
-        *       c. pointerB++
+        *       c. else pointerB++
         * 3. If arr[pointerA] + arr[pointerB] != n
         *       a. Then return result
         * 4. Else
