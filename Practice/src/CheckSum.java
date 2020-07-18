@@ -46,8 +46,8 @@ public class CheckSum {
 
     public static void main(String args[]) {
 
-        int n = 11;
-        int[] arr1 = {3, 2, 6, 5, 7, 8};
+        int n = 4;
+        int[] arr1 = {2, 1, 1, 5, 7, 3};
         if(arr1.length > 0){
             int[] arr2 = twoNumbersAddToN(arr1, n);
             int num1 = arr2[0];
