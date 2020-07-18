@@ -8,7 +8,7 @@ public class mergeSortedArrays {
         2. When one pointer reaches its end we can add all the element of the remaining array to the new array
         3. Finally return array
 
-        Time Complexity: O(n)
+        Time Complexity: O(n+m)
       */
 
         int pointerA = 0, pointerB = 0, cursor = 0;
