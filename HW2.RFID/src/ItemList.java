@@ -40,27 +40,82 @@ public class ItemList {
     }
 
     public void removeAllPurchased(){
-//        if(this.head.getInfo().getCurrent_position().equalsIgnoreCase("out")){
-//            this.head = this.head.getNext();
-//            this.head.setPrev(null);
-//        }
-//        if(this.tail.getInfo().getCurrent_position().equalsIgnoreCase("out")){
-//            this.tail = this.tail.getPrev();
-//            this.tail.setNext(null);
-//        }
-//        ItemInfoNode pointer = this.head;
-//        while(pointer != null){
-//            if(!pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
-//                pointer = pointer.getNext();
-//            }else {
-//                ItemInfoNode prev = pointer.getPrev();
-//                prev.setNext(pointer.getNext());
-//                prev.getNext().setPrev(prev);
-//                pointer = prev.getNext();
-//            }
-//        }
+        if(this.head.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+            this.head = this.head.getNext();
+            this.head.setPrev(null);
+        }
+        if(this.tail.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+            this.tail = this.tail.getPrev();
+            this.tail.setNext(null);
+        }
+        ItemInfoNode pointer = this.head;
+        while(pointer != null){
+            if(!pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+                pointer = pointer.getNext();
+            }else {
+                ItemInfoNode prev = pointer.getPrev();
+                prev.setNext(pointer.getNext());
+                prev.getNext().setPrev(prev);
+                pointer = prev.getNext();
+            }
+        }
 
 
+    }
+
+    public boolean moveItem(String rfidTag, String source, String dest){
+        ItemInfoNode pointer = this.head;
+        while(pointer != null){
+            if(pointer.getInfo().getRfidTagNumber().equals(rfidTag) && pointer.getInfo().getCurrent_position().equals(source)){
+                pointer.getInfo().setCurrent_position(dest);
+                return true;
+            }
+            pointer = pointer.getNext();
+        }
+        return false;
+    }
+
+    public void printByLocation(String location){
+        ItemList location_list = new ItemList();
+        ItemInfoNode pointer  = this.head;
+        while(pointer != null){
+            if(pointer.getInfo().getCurrent_position().equals(location)){
+                location_list.insertInfo(pointer.getInfo().getName(), pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getOriginal_position());
+                location_list.moveItem(pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getOriginal_position(), pointer.getInfo().getCurrent_position());
+            }
+            pointer = pointer.getNext();
+        }
+        location_list.printAll();
+    }
+
+    public void cleanStore(){
+        ItemInfoNode pointer = this.head;
+
+        while (pointer != null){
+            if(!pointer.getInfo().getOriginal_position().equals(pointer.getInfo().getCurrent_position())){
+                pointer.getInfo().setCurrent_position(pointer.getInfo().getOriginal_position());
+            }
+            pointer = pointer.getNext();
+        }
+    }
+
+    public double checkOut(String cartNumber){
+        ItemList purchased = new ItemList();
+        ItemInfoNode pointer = this.head;
+        double checkout_total = 0;
+
+        while(pointer != null){
+            if(pointer.getInfo().getCurrent_position().equals(cartNumber)){
+                checkout_total += pointer.getInfo().getPrice();
+                purchased.insertInfo(pointer.getInfo().getName(), pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getOriginal_position());
+                purchased.moveItem(pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getOriginal_position(), pointer.getInfo().getCurrent_position());
+
+                pointer.getInfo().setCurrent_position("out");
+            }
+            pointer = pointer.getNext();
+        }
+        purchased.printAll();
+        return checkout_total;
     }
 
 

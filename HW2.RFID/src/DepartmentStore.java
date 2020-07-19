@@ -26,7 +26,13 @@ public class DepartmentStore {
         list.insertInfo(node.getInfo().getName(),node.getInfo().getRfidTagNumber(),node.getInfo().getPrice(),node.getInfo().getOriginal_position());
         list.insertInfo(node1.getInfo().getName(),node1.getInfo().getRfidTagNumber(),node1.getInfo().getPrice(),node1.getInfo().getOriginal_position());
         list.insertInfo(node1.getInfo().getName(),node1.getInfo().getRfidTagNumber(),node1.getInfo().getPrice(),node1.getInfo().getOriginal_position());
-
+        list.moveItem("00A5532FF", "s12345", "c202");
+        list.moveItem("00A5532FF", "s12345", "s10000");
+//        list.cleanStore();
+        list.checkOut("c202");
+        list.removeAllPurchased();
         list.printAll();
+//       System.out.println("---------");
+//        list.printByLocation("c202");
     }
 }
