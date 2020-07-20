@@ -8,51 +8,58 @@ public class ItemList {
     }
 
     public void insertInfo(String name, String rfidTag, double price, String initPosition){
-        ItemInfoNode item = new ItemInfoNode();
-        item.setInfo(new ItemInfo(name, rfidTag, price, initPosition));
+        try {
+            ItemInfoNode item = new ItemInfoNode();
+            item.setInfo(new ItemInfo(name, rfidTag, price, initPosition));
 
-        if(head == null){
-            this.head = item;
-            this.tail = item;
-            item.setPrev(null);
-            item.setNext(null);
-            return;
-        }
-
-        if(this.head.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
-            item.setNext(this.head);
-            this.head.setPrev(item);
-            this.head = item;
-            return;
-        }
-
-        ItemInfoNode pointer = this.head.getNext();
-        while(pointer != null){
-            if(pointer.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
-                ItemInfoNode prev  = pointer.getPrev();
-                item.setNext(pointer);
-                item.setPrev(prev);
-                prev.setNext(item);
-                pointer.setPrev(item);
+            if(head == null){
+                this.head = item;
+                this.tail = item;
+                item.setPrev(null);
+                item.setNext(null);
                 return;
             }
-            pointer = pointer.getNext();
+
+            if(this.head.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
+                item.setNext(this.head);
+                this.head.setPrev(item);
+                this.head = item;
+                return;
+            }
+
+            ItemInfoNode pointer = this.head.getNext();
+            while(pointer != null){
+                if(pointer.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
+                    ItemInfoNode prev  = pointer.getPrev();
+                    item.setNext(pointer);
+                    item.setPrev(prev);
+                    prev.setNext(item);
+                    pointer.setPrev(item);
+                    return;
+                }
+                pointer = pointer.getNext();
+            }
+            addEnd(item);
+        }catch (InvalidRfid | InvalidShelfPosition invalidRfid) {
+            invalidRfid.printStackTrace();
         }
-        addEnd(item);
     }
 
     public void removeAllPurchased(){
+        ItemList remove_from_system = new ItemList();
         if(this.head.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+            remove_from_system.insertInfo(this.head.getInfo().getName(), this.head.getInfo().getRfidTagNumber(), this.head.getInfo().getPrice(), this.head.getInfo().getCurrent_position());
             this.head = this.head.getNext();
             this.head.setPrev(null);
         }
         if(this.tail.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+            remove_from_system.insertInfo(this.tail.getInfo().getName(), this.tail.getInfo().getRfidTagNumber(), this.tail.getInfo().getPrice(), this.tail.getInfo().getCurrent_position());
             this.tail = this.tail.getPrev();
             this.tail.setNext(null);
         }
         ItemInfoNode pointer = this.head;
         while(pointer != null){
-            if(!pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+            if(!(pointer.getInfo().getCurrent_position().equalsIgnoreCase("out"))){
                 pointer = pointer.getNext();
             }else {
                 ItemInfoNode prev = pointer.getPrev();
@@ -69,14 +76,20 @@ public class ItemList {
         if(dest.equalsIgnoreCase("out")){
             return true;
         }
-        ItemInfoNode pointer = this.head;
-        while(pointer != null){
-            if(pointer.getInfo().getRfidTagNumber().equals(rfidTag) && pointer.getInfo().getCurrent_position().equals(source) && !pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
-                pointer.getInfo().setCurrent_position(dest);
-                return true;
+
+            ItemInfoNode pointer = this.head;
+            while(pointer != null){
+                if(pointer.getInfo().getRfidTagNumber().equals(rfidTag) && pointer.getInfo().getCurrent_position().equals(source) && !pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
+                    try {
+                        pointer.getInfo().setCurrent_position(dest);
+                    } catch (InvalidCurrentPosition invalidCurrentPosition) {
+                        System.out.println("Sorry you can't put that there");
+                    }
+                    return true;
+                }
+                pointer = pointer.getNext();
             }
-            pointer = pointer.getNext();
-        }
+
 
         return false;
     }
@@ -95,37 +108,49 @@ public class ItemList {
     }
 
     public void cleanStore(){
-        ItemInfoNode pointer = this.head;
-        ItemList back_to_original = new ItemList();
-        while (pointer != null){
-            if(!pointer.getInfo().getOriginal_position().equals(pointer.getInfo().getCurrent_position())){
-                back_to_original.insertInfo(pointer.getInfo().getName(),pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getCurrent_position());
-                pointer.getInfo().setCurrent_position(pointer.getInfo().getOriginal_position());
+
+            ItemInfoNode pointer = this.head;
+            ItemList back_to_original = new ItemList();
+            while (pointer != null){
+                if(!(pointer.getInfo().getOriginal_position().equals(pointer.getInfo().getCurrent_position())) && !(pointer.getInfo().getCurrent_position().equalsIgnoreCase("out"))){
+                    back_to_original.insertInfo(pointer.getInfo().getName(),pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getCurrent_position());
+                    try {
+                        pointer.getInfo().setCurrent_position(pointer.getInfo().getOriginal_position());
+                    } catch (InvalidCurrentPosition invalidCurrentPosition) {
+                        invalidCurrentPosition.printStackTrace();
+                    }
+                }
+                pointer = pointer.getNext();
             }
-            pointer = pointer.getNext();
-        }
-        back_to_original.printAll();
+            back_to_original.printAll();
+
     }
 
     public double checkOut(String cartNumber){
-        ItemList purchased = new ItemList();
-        ItemInfoNode pointer = this.head;
         double checkout_total = 0;
+            ItemList purchased = new ItemList();
+            ItemInfoNode pointer = this.head;
 
-        while(pointer != null){
-            if(pointer.getInfo().getCurrent_position().equals(cartNumber)){
-                checkout_total += pointer.getInfo().getPrice();
-                purchased.insertInfo(pointer.getInfo().getName(), pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getOriginal_position());
-                purchased.moveItem(pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getOriginal_position(), pointer.getInfo().getCurrent_position());
 
-                pointer.getInfo().setCurrent_position("out");
+            while(pointer != null){
+                if((pointer.getInfo().getCurrent_position().equals(cartNumber)) && !(pointer.getInfo().getCurrent_position().equalsIgnoreCase("out"))){
+                    checkout_total += pointer.getInfo().getPrice();
+                    purchased.insertInfo(pointer.getInfo().getName(), pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getOriginal_position());
+                    purchased.moveItem(pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getOriginal_position(), pointer.getInfo().getCurrent_position());
+
+                    try {
+                        pointer.getInfo().setCurrent_position("out");
+                    } catch (InvalidCurrentPosition invalidCurrentPosition) {
+                        System.out.println("Sorry you can't put that there");
+                    }
+                }
+                pointer = pointer.getNext();
             }
-            pointer = pointer.getNext();
-        }
-        purchased.printAll();
-        System.out.print("\nThe total cost for all merchandise in cart "+cartNumber+ " was $");
-        System.out.printf("%.2f", checkout_total);
-        System.out.println();
+            purchased.printAll();
+            System.out.print("\nThe total cost for all merchandise in cart "+cartNumber+ " was $");
+            System.out.printf("%.2f", checkout_total);
+            System.out.println();
+
         return checkout_total;
     }
 

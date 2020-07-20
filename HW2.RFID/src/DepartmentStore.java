@@ -46,8 +46,10 @@ public class DepartmentStore {
                         ItemInfoNode item = new ItemInfoNode();
                         item.setInfo(info);
                         inventory.insertInfo(item.getInfo().getName(), item.getInfo().getRfidTagNumber(), item.getInfo().getPrice(), item.getInfo().getOriginal_position());
-                    }catch (Exception e){
-                        System.out.println(e.toString());
+                    }catch (InvalidRfid invalidRfid){
+                        System.out.println("\nInvalid RfidTag Number");
+                    }catch (InvalidShelfPosition invalidShelfPosition){
+                        System.out.println("\nInvalid Shelf Position");
                     }
                     break;
                 case 'L':
@@ -69,14 +71,7 @@ public class DepartmentStore {
                     System.out.print("Enter the new location: ");
                     current_location = in.nextLine();
 
-                    try {
-                        inventory.moveItem(rfid,original_location,current_location);
-                        if(!inventory.moveItem(rfid,original_location,current_location)){
-                            System.out.println("Item was not found");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    inventory.moveItem(rfid,original_location,current_location);
                     break;
                 case 'O':
                     System.out.print("Enter the cart number: ");
@@ -94,6 +89,7 @@ public class DepartmentStore {
                 case 'R':
                     break;
                 case 'U':
+                    inventory.removeAllPurchased();
                     break;
                 default:
                     break;
