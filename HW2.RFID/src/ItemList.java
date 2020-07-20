@@ -10,6 +10,7 @@ public class ItemList {
     public void insertInfo(String name, String rfidTag, double price, String initPosition){
         ItemInfoNode item = new ItemInfoNode();
         item.setInfo(new ItemInfo(name, rfidTag, price, initPosition));
+
         if(head == null){
             this.head = item;
             this.tail = item;
@@ -17,26 +18,27 @@ public class ItemList {
             item.setNext(null);
             return;
         }
-        if(findRFID(rfidTag)){
-            if(this.tail.getInfo().getRfidTagNumber().equals(rfidTag)){
-                addEnd(item);
-                return;
-            }
-            ItemInfoNode pointer = this.head;
-            while (pointer != null){
-                if(pointer.getInfo().getRfidTagNumber().equals(rfidTag)){
-                    break;
-                }
-                pointer = pointer.getNext();
-            }
-            ItemInfoNode next = pointer.getNext();
-            item.setNext(next);
-            item.setPrev(pointer);
-            next.setPrev(item);
-            pointer.setNext(item);
+
+        if(this.head.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
+            item.setNext(this.head);
+            this.head.setPrev(item);
+            this.head = item;
             return;
         }
-       addEnd(item);
+
+        ItemInfoNode pointer = this.head.getNext();
+        while(pointer != null){
+            if(pointer.getInfo().getRfidTagNumber().compareTo(rfidTag) > 0){
+                ItemInfoNode prev  = pointer.getPrev();
+                item.setNext(pointer);
+                item.setPrev(prev);
+                prev.setNext(item);
+                pointer.setPrev(item);
+                return;
+            }
+            pointer = pointer.getNext();
+        }
+        addEnd(item);
     }
 
     public void removeAllPurchased(){
@@ -64,14 +66,18 @@ public class ItemList {
     }
 
     public boolean moveItem(String rfidTag, String source, String dest){
+        if(dest.equalsIgnoreCase("out")){
+            return true;
+        }
         ItemInfoNode pointer = this.head;
         while(pointer != null){
-            if(pointer.getInfo().getRfidTagNumber().equals(rfidTag) && pointer.getInfo().getCurrent_position().equals(source)){
+            if(pointer.getInfo().getRfidTagNumber().equals(rfidTag) && pointer.getInfo().getCurrent_position().equals(source) && !pointer.getInfo().getCurrent_position().equalsIgnoreCase("out")){
                 pointer.getInfo().setCurrent_position(dest);
                 return true;
             }
             pointer = pointer.getNext();
         }
+
         return false;
     }
 
@@ -90,13 +96,15 @@ public class ItemList {
 
     public void cleanStore(){
         ItemInfoNode pointer = this.head;
-
+        ItemList back_to_original = new ItemList();
         while (pointer != null){
             if(!pointer.getInfo().getOriginal_position().equals(pointer.getInfo().getCurrent_position())){
+                back_to_original.insertInfo(pointer.getInfo().getName(),pointer.getInfo().getRfidTagNumber(), pointer.getInfo().getPrice(), pointer.getInfo().getCurrent_position());
                 pointer.getInfo().setCurrent_position(pointer.getInfo().getOriginal_position());
             }
             pointer = pointer.getNext();
         }
+        back_to_original.printAll();
     }
 
     public double checkOut(String cartNumber){
@@ -115,6 +123,9 @@ public class ItemList {
             pointer = pointer.getNext();
         }
         purchased.printAll();
+        System.out.print("\nThe total cost for all merchandise in cart "+cartNumber+ " was $");
+        System.out.printf("%.2f", checkout_total);
+        System.out.println();
         return checkout_total;
     }
 
@@ -152,3 +163,43 @@ public class ItemList {
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+/*
+
+if(head == null){
+            this.head = item;
+            this.tail = item;
+            item.setPrev(null);
+            item.setNext(null);
+            return;
+        }
+        if(findRFID(rfidTag)){
+            if(this.tail.getInfo().getRfidTagNumber().equals(rfidTag)){
+                addEnd(item);
+                return;
+            }
+            ItemInfoNode pointer = this.head;
+            while (pointer != null){
+                if(pointer.getInfo().getRfidTagNumber().equals(rfidTag)){
+                    break;
+                }
+                pointer = pointer.getNext();
+            }
+            ItemInfoNode next = pointer.getNext();
+            item.setNext(next);
+            item.setPrev(pointer);
+            next.setPrev(item);
+            pointer.setNext(item);
+            return;
+        }
+       addEnd(item);
+ */
