@@ -1,4 +1,15 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+/**
+ * Paul Adu-Gyamfi
+ * #111607347
+ * paul.adu-gyamfi@stonybrook.edu
+ *
+ * CSE 214.R30
+ * Juan Tarquino
+ */
+
 public class DepartmentStore {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -20,7 +31,7 @@ public class DepartmentStore {
         System.out.print("Please select an option: ");
         char menu_option = in.next().charAt(0);
 
-        while(menu_option != 'Q'){
+        while(menu_option != 'Q' && menu_option != 'q'){
 
             String name, rfid, original_location, current_location, cart;
             double price;
@@ -39,17 +50,23 @@ public class DepartmentStore {
                     System.out.print("Enter the original location: ");
                     original_location = in.nextLine();
                     System.out.print("Enter the price: ");
-                    price = in.nextDouble();
 
                     try{
+                        price = in.nextDouble();
+
                         ItemInfo info  = new ItemInfo(name,rfid,price,original_location);
                         ItemInfoNode item = new ItemInfoNode();
                         item.setInfo(info);
                         inventory.insertInfo(item.getInfo().getName(), item.getInfo().getRfidTagNumber(), item.getInfo().getPrice(), item.getInfo().getOriginal_position());
+
                     }catch (InvalidRfid invalidRfid){
-                        System.out.println("\nInvalid RfidTag Number");
+                        System.err.println("\nInvalid RfidTag Number");
                     }catch (InvalidShelfPosition invalidShelfPosition){
-                        System.out.println("\nInvalid Shelf Position");
+                        System.err.println("\nInvalid Shelf Position");
+                    }catch (InputMismatchException inputMismatchException){
+                        System.err.println("\nPlease enter a valid price value");
+
+                        break;
                     }
                     break;
                 case 'L':
@@ -59,7 +76,7 @@ public class DepartmentStore {
                     try {
                         inventory.printByLocation(current_location);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.err.println("No items at that location");
                     }
                     break;
                 case 'M':
@@ -87,8 +104,17 @@ public class DepartmentStore {
                     inventory.printAll();
                     break;
                 case 'R':
+                    System.out.print("Enter the Rfid Tag Number: ");
+                    rfid = in.next();
+
+                    try {
+                        inventory.printByRfidTagNumber(rfid);
+                    } catch (Exception e) {
+                        System.err.println("No items with that Rfid Tag Number");
+                    }
                     break;
                 case 'U':
+                    System.out.println("\nThe following item(s) have removed from the system:");
                     inventory.removeAllPurchased();
                     break;
                 default:
