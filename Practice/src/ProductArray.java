@@ -1,5 +1,5 @@
 public class ProductArray {
-    public static int[] findProduct(int arr[]){
+    public static int[] findProduct(int[] arr){
         int[] result = new int[arr.length];
 
         /**
@@ -33,7 +33,7 @@ public class ProductArray {
         return result;
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         int[] arr = {-1, 2, -3, 4, -5};
 
