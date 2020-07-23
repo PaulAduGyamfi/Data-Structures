@@ -4,6 +4,8 @@ public class JewelsAndStones {
          *  1. Looop through Sting S and check for each letter using substring method
          *      if String J contains it using contains method if so increment num of jewels
          *  2. Return num of jewels
+         *
+         *  Time Complexity: O(n)
          */
 
         int num_of_jewels = 0;
