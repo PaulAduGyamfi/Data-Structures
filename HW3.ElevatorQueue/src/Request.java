@@ -14,7 +14,7 @@ public class Request {
     }
 
     public void setSourceFloor(int totalFloors) {
-        this.sourceFloor = (int) ((Math.random()*((totalFloors+1) - 1))+1);
+        this.sourceFloor = (int) (Math.random() * totalFloors + 1);
     }
 
     public int getDestinationFloor() {
@@ -22,7 +22,7 @@ public class Request {
     }
 
     public void setDestinationFloor(int totalFloors) {
-        this.destinationFloor = (int) ((Math.random()*((totalFloors+1) - 1))+1);
+        this.destinationFloor = (int) (Math.random() * totalFloors + 1);
     }
 
     public int getTimeEntered() {
