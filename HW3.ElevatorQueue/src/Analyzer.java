@@ -1,43 +1,53 @@
 import java.util.Scanner;
+/**
+ * Paul Adu-Gyamfi
+ * #111607347
+ * paul.adu-gyamfi@stonybrook.edu
+ *
+ * CSE 214.R30
+ * Juan Tarquino
+ */
 public class Analyzer {
-    public static void main (String[]args) throws QueueEmptyException, QueueFullException {
-        Scanner s = new Scanner(System.in);
+    public static void main (String[] args) throws QueueEmptyException, QueueFullException {
+
+        Scanner in = new Scanner(System.in);
+
 
         System.out.print("Please enter the probability of arrival for Requests: ");
-        double prob = s.nextDouble();
-        if((prob < 0.0) || (prob > 1.0)){
-            System.out.print("Probability must be between 0 and 1" +
-                    " inclusive, try again: ");
-            prob = s.nextDouble();
+        double probability = in.nextDouble();
+
+        while((probability < 0.0) || (probability > 1.0)){
+            System.out.println();
+            System.out.println("The probability must be between 0 and 1!");
+            System.out.print("Please enter the probability of arrival for Requests: ");
+             probability = in.nextDouble();
         }
 
         System.out.print("Please enter the number of floors: ");
-        int numFloors = s.nextInt();
-        if(numFloors < 2){
-            System.out.print("There must be at least 2 floors to " +
-                    "use an elevator try again: ");
-            numFloors = s.nextInt();
-
+        int totalFloors = in.nextInt();
+        while(totalFloors <= 1){
+            System.out.println("There has to be more than 1 floor in the building!");
+            System.out.print("Please enter the number of floors: ");
+            totalFloors = in.nextInt();
         }
 
         System.out.print("Please enter the number of elevators: ");
-        int numLifts = s.nextInt();
-        if(numLifts < 1){
-            System.out.print("There must be at least 1 Elevator to " +
-                    "use an elevator try again: ");
-            numLifts = s.nextInt();
+        int totalElevators = in.nextInt();
+        while(totalElevators <= 0){
+            System.out.println("The number of elevators must be greater than 0!");
+            System.out.print("Please enter the number of elevators: ");
+            totalElevators = in.nextInt();
 
         }
 
         System.out.print("Please enter the length of the simulation (in time units): ");
-        int simTime = s.nextInt();
-        if(simTime < 1){
-            System.out.print("The simulation doesn't run if it has " +
-                    "zero run time, try again: ");
-            simTime = s.nextInt();
-
+        int simulationLength = in.nextInt();
+        while(simulationLength <= 0){
+            System.out.println("The length of the simulation must be greater than 0! ");
+            System.out.print("Please enter the length of the simulation (in time units): ");
+            simulationLength = in.nextInt();
         }
 
-        Simulator.simulate(prob, numFloors, numLifts, simTime);
+        Simulator.simulate(probability, totalFloors, totalElevators, simulationLength);
     }
 }
