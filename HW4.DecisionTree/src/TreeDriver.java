@@ -1,7 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
+/**
+ * Paul Adu-Gyamfi
+ * #111607347
+ * paul.adu-gyamfi@stonybrook.edu
+ *
+ * CSE 214.R30
+ * Juan Tarquino
+ */
 public class TreeDriver {
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
@@ -68,17 +75,17 @@ public class TreeDriver {
 
                             treeLoad = true;
                         }
-                        while(content.hasNextLine()){
-                            parent = content.nextLine();
-                            numOfChildren = content.nextLine().trim();
-                            int children = Integer.parseInt(numOfChildren);
-                            for(int i = 1; i<=children; i++){
-                                label= content.nextLine();
-                                message= content.nextLine();
-                                prompt = content.nextLine();
-                                triTree.addNode(label,prompt,message,parent);
-                            }
-                        }
+//                        while(content.hasNextLine()){
+//                            parent = content.nextLine();
+//                            numOfChildren = content.nextLine().trim();
+//                            int children = Integer.parseInt(numOfChildren);
+//                            for(int i = 1; i<=children; i++){
+//                                label= content.nextLine();
+//                                message= content.nextLine();
+//                                prompt = content.nextLine();
+//                                triTree.addNode(label,prompt,message,parent);
+//                            }
+//                        }
 
                         content.close();
 
@@ -87,7 +94,32 @@ public class TreeDriver {
                     }
                     break;
                 case 'H':
+                    System.out.println("Help Session Starting...");
+                    System.out.println("What Model is the Washing Machine?");
+                    System.out.println("1 Machine won't start.\n" +
+                            "2 Machine ends too early.\n" +
+                            "3 Machine knobs are broken.\n" +
+                            "0 Exit Session.");
+                    System.out.print("Choice> ");
+                    int model = in.nextInt();
 
+                    TreeNode node;
+                    switch (model){
+                        case 1:
+                            node = triTree.getRoot().getLeft();
+                            System.out.println(node.getLabel());
+                            break;
+                        case 2:
+                            node = triTree.getRoot().getMiddle();
+                            System.out.println(node.getLabel());
+                            break;
+                        case 3:
+                            node = triTree.getRoot().getRight();
+                            System.out.println(node.getLabel());
+                            break;
+                        default:
+                            break;
+                    }
                     break;
 
                 case 'T':
