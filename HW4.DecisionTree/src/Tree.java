@@ -7,6 +7,10 @@ public class Tree {
         this.root = new TreeNode();
     }
 
+    public TreeNode getRoot(){
+        return root;
+    }
+
     public boolean addNode(String label, String prompt, String message, String parentLabel){
         TreeNode node = new TreeNode();
         if(root.getLeft() == null){

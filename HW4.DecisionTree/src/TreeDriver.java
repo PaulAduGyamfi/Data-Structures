@@ -14,7 +14,8 @@ public class TreeDriver {
         System.out.print("Choice>");
         char choice = in.next().charAt(0);
 
-        Tree triTree;
+        Tree triTree = new Tree();
+        boolean treeLoad = false;
 
         while (choice != 'Q'){
 
@@ -24,51 +25,90 @@ public class TreeDriver {
                     String message;
                     String prompt;
                     String numOfChildren;
+                    String parent;
 
-                    System.out.println("Enter the file name>");
-                    String file = in.nextLine();
+                    System.out.print("Enter the file name>");
+                    in.nextLine();
+                    String filename = in.nextLine();
 
 
                     try{
 
-                        File txtFile = new File(file);
+                        File txtFile = new File(filename);
 
-                        Scanner content = new Scanner(file);
+                        Scanner content = new Scanner(txtFile);
+
                         if(content.hasNextLine()){
-                            label = content.nextLine().trim();
-                            message = content.nextLine().trim();
-                            prompt = content.nextLine().trim();
+                            label = content.nextLine();
+                            message = content.nextLine();
+                            prompt = content.nextLine();
 
-                            TreeNode root  = new TreeNode();
+                            triTree.getRoot().setLabel(label);
+                            triTree.getRoot().setMessage(message);
+                            triTree.getRoot().setPrompt(prompt);
 
-                            root.setLabel(label);
-                            root.setMessage(message);
-                            root.setPrompt(prompt);
+                            label = content.nextLine();
+                            message = content.nextLine();
+                            prompt = content.nextLine();
+                            TreeNode left = new TreeNode(label,message,prompt);
+                            triTree.getRoot().setLeft(left);
 
-                            triTree = new Tree();
+
+                            label = content.nextLine();
+                            message = content.nextLine();
+                            prompt = content.nextLine();
+                            TreeNode middle = new TreeNode(label,message,prompt);
+                            triTree.getRoot().setMiddle(middle);
+
+                            label = content.nextLine();
+                            message = content.nextLine();
+                            prompt = content.nextLine();
+                            TreeNode right = new TreeNode(label,message,prompt);
+                            triTree.getRoot().setRight(right);
+
+                            treeLoad = true;
                         }
                         while(content.hasNextLine()){
-
+                            parent = content.nextLine();
+                            numOfChildren = content.nextLine().trim();
+                            int children = Integer.parseInt(numOfChildren);
+                            for(int i = 1; i<=children; i++){
+                                label= content.nextLine();
+                                message= content.nextLine();
+                                prompt = content.nextLine();
+                                triTree.addNode(label,prompt,message,parent);
+                            }
                         }
+
+                        content.close();
 
                     }catch (Exception f){
                         System.out.println("File cannot be found!");
                     }
-
-
                     break;
                 case 'H':
 
                     break;
 
                 case 'T':
-
+                    if(treeLoad){
+                        triTree.preOrder();
+                    }else{
+                        System.out.println("You must first load a tree!");
+                    }
                     break;
 
                 default:
                     break;
             }
 
+            System.out.println(("L - Load a Tree."));
+            System.out.println(("H - Begin a Help Session."));
+            System.out.println(("T - Traverse the Tree in preorder.."));
+            System.out.println(("Q - Quit."));
+
+            System.out.print("Choice>");
+            choice = in.next().charAt(0);
 
         }
 

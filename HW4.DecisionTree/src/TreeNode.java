@@ -18,6 +18,16 @@ public class TreeNode {
         this.middle = null;
         this.right = null;
     }
+    public TreeNode(String label,String message, String prompt){
+
+        this.label = label;
+        this.message = message;
+        this.prompt = prompt;
+
+        this.left = null;
+        this.middle = null;
+        this.right = null;
+    }
 
     public String getLabel() {
         return label;
