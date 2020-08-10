@@ -101,7 +101,7 @@ public class Mailbox extends ArrayList<Email>{
         for(Folder folder : mailbox.folders){
             System.out.println(folder.getName());
         }
-        System.out.println("A – Add folder\nR – Remove folder\nC – Compose email\nF – Open folder\nI – Open Inbox\nT – Open Trash\nQ – Quit\n");
+        System.out.println("\nA – Add folder\nR – Remove folder\nC – Compose email\nF – Open folder\nI – Open Inbox\nT – Open Trash\nQ – Quit\n");
         System.out.print("Enter a user option: ");
 
         char menu_option = in.next().charAt(0);
@@ -163,6 +163,11 @@ public class Mailbox extends ArrayList<Email>{
                             System.out.print("Enter recipient (To): ");
                             in.nextLine();
                             String to = in.nextLine();
+
+                            if(!to.matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")){
+                                System.out.println("Not a valid email address");
+                                break;
+                            }
 
                             System.out.print("Enter carbon copy recipients (CC): ");
                             String cc = in.nextLine();
@@ -229,17 +234,16 @@ public class Mailbox extends ArrayList<Email>{
                                     for (Folder getFolders : mailbox.folders) {
                                         System.out.print(getFolders.getName() + "\n");
                                     }
-                                    Email move = stepIntoFolder.removeEmail(index-1);
 
                                     System.out.print("Select a folder to move “Testing” to: ");
                                     String newFolder = in.nextLine();
 
-                                    for(Folder folder : mailbox.folders){
-                                        if(newFolder.equals(folder.getName())){
-                                            folder.addEmail(move);
+                                    for(int i = 0; i < mailbox.folders.size(); i++){
+                                        if(newFolder.equalsIgnoreCase(mailbox.folders.get(i).getName())){
+                                            mailbox.folders.get(i).addEmail(stepIntoFolder.removeEmail(index-1));
+                                            System.out.println("“Testing” successfully moved to "+mailbox.folders.get(i).getName());
                                         }
                                     }
-                                    System.out.println("“Testing” successfully moved to "+newFolder);
                                     break;
                                 case "D":
                                     System.out.print("Enter email index: ");
@@ -304,18 +308,18 @@ public class Mailbox extends ArrayList<Email>{
                                     for (Folder getFolders : mailbox.folders) {
                                         System.out.print(getFolders.getName() + "\n");
                                     }
-                                    Email move = mailbox.inbox.removeEmail(index-1);
 
                                     System.out.print("Select a folder to move “Testing” to: ");
                                     String newFolder = in.nextLine();
 
-                                    for(Folder folder : mailbox.folders){
-                                        if(newFolder.equalsIgnoreCase(folder.getName())){
-                                            folder.addEmail(move);
+                                    for(int i = 0; i < mailbox.folders.size(); i++){
+                                        if(newFolder.equalsIgnoreCase(mailbox.folders.get(i).getName())){
+                                            mailbox.folders.get(i).addEmail(mailbox.inbox.removeEmail(index-1));
+                                            System.out.println("“Testing” successfully moved to "+ mailbox.folders.get(i).getName());
                                         }
                                     }
                                     in.nextLine();
-                                    System.out.println("“Testing” successfully moved to "+ newFolder);
+
                                     break;
                                 case "D":
                                     System.out.print("Enter email index: ");
@@ -358,7 +362,7 @@ public class Mailbox extends ArrayList<Email>{
                                     mailbox.inbox.toString();
                                     break;
                             }
-                            System.out.println("M – Move email\nD – Delete email\nV – View email contents\nSA – Sort by subject line in ascending order\nSD – Sort by subject line in descending order\nDA – Sort by date in ascending order\nDD – Sort by date in descending order\nR – Return to mailbox");
+                            System.out.println("\nM – Move email\nD – Delete email\nV – View email contents\nSA – Sort by subject line in ascending order\nSD – Sort by subject line in descending order\nDA – Sort by date in ascending order\nDD – Sort by date in descending order\nR – Return to mailbox");
                             System.out.print("Enter a user option: ");
                             sub_menu_option = in.next();
                         }
@@ -379,17 +383,17 @@ public class Mailbox extends ArrayList<Email>{
                                     for (Folder getFolders : mailbox.folders) {
                                         System.out.print(getFolders.getName() + "\n");
                                     }
-                                    Email move = mailbox.trash.removeEmail(index-1);
 
                                     System.out.print("Select a folder to move “Testing” to: ");
                                     String newFolder = in.nextLine();
 
-                                    for(Folder folder : mailbox.folders){
-                                        if(newFolder.equals(folder.getName())){
-                                            folder.addEmail(move);
+
+                                    for(int i = 0; i < mailbox.folders.size(); i++){
+                                        if(newFolder.equalsIgnoreCase(mailbox.folders.get(i).getName())){
+                                            mailbox.folders.get(i).addEmail(mailbox.trash.removeEmail(index-1));
+                                            System.out.println("“Testing” successfully moved to "+ mailbox.folders.get(i).getName());
                                         }
                                     }
-                                    System.out.println("“Testing” successfully moved to" + newFolder);
 
                                     break;
                                 case "D":
@@ -442,7 +446,7 @@ public class Mailbox extends ArrayList<Email>{
                     default:
                         break;
                 }
-                        System.out.println("A – Add folder\nR – Remove folder\nC – Compose email\nF – Open folder\nI – Open Inbox\nT – Open Trash\nQ – Quit\n");
+                        System.out.println("\nA – Add folder\nR – Remove folder\nC – Compose email\nF – Open folder\nI – Open Inbox\nT – Open Trash\nQ – Quit\n");
                         System.out.print("Enter a user option: ");
                         menu_option = in.next().charAt(0);
 
