@@ -4,6 +4,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+
+/**
+ * Paul Adu-Gyamfi
+ * #111607347
+ * paul.adu-gyamfi@stonybrook.edu
+ *
+ * CSE 214.R30
+ * Juan Tarquino
+ *
+ *
+ *
+ * This class represents a Mailbox which holds folders of emails
+ */
+
 public class Mailbox extends ArrayList<Email>{
     private final Folder inbox = new Folder("Inbox");;
     private final Folder trash = new Folder("Trash");
@@ -16,7 +30,13 @@ public class Mailbox extends ArrayList<Email>{
         folders.add(trash);
     }
 
-
+    /**
+     *
+     * @param folder
+     * name of the new folder to create and add to mailbox
+     * @throws ExisitngFolderException
+     * if there is an existing folder in the mailbox with the sam name
+     */
     public void addFolder(Folder folder) throws ExisitngFolderException{
         if(folders.size() > 0){
             for (Folder value : folders) {
@@ -28,22 +48,45 @@ public class Mailbox extends ArrayList<Email>{
         folders.add(folder);
     }
 
+    /**
+     *
+     * @param to
+     * the recipient of the email
+     * @param cc
+     * the carbon copy recipients
+     * @param bcc
+     * the blind carbon copy recipients
+     * @param subject
+     * the subject of the email
+     * @param body
+     * the body of the email
+     * @param timestamp
+     * the date timestamp of the created email
+     */
     public void composeEmail(String to, String cc, String bcc, String subject, String body, GregorianCalendar timestamp){
         Email composeEmail = new Email(to, cc, bcc, subject, body, timestamp);
         inbox.addEmail(composeEmail);
     }
 
+    /**
+     *
+     * @param email
+     * email to be moved to trash folder
+     */
     public void deleteEmail(Email email){
         trash.addEmail(email);
     }
 
+    /**
+     *
+     * @param name
+     * name of folder to remove from the mailbox
+     * @throws EmptyMailboxException
+     * if folder does not exist
+     */
     public void deleteFolder(String name) throws EmptyMailboxException{
         if(folders.size() > 0){
-            for (Folder value : folders) {
-                if (value.getName().equals(name)) {
-                   folders.remove(value);
-                }
-            }
+            folders.removeIf(value -> value.getName().equalsIgnoreCase(name));
         }else {
             throw new EmptyMailboxException();
         }
@@ -65,7 +108,7 @@ public class Mailbox extends ArrayList<Email>{
         String sub_menu_option;
         Folder stepIntoFolder = null;
 
-            while(menu_option != 'Q') {
+            while(menu_option != 'Q' && menu_option != 'q') {
 
                 switch (Character.toUpperCase(menu_option)) {
                     case 'A':
@@ -92,7 +135,7 @@ public class Mailbox extends ArrayList<Email>{
 
                         try {
                             for (Folder folder : mailbox.folders) {
-                                if (folder.getName().equals(deleteFolder) && !(folder.getName().equals("Inbox")) && !(folder.getName().equals("Trash"))) {
+                                if (folder.getName().equalsIgnoreCase(deleteFolder) && !(folder.getName().equals("Inbox")) && !(folder.getName().equals("Trash"))) {
                                     canDelete = true;
                                 }
                                 if(folder.getName().equals("Inbox") || folder.getName().equals("Trash")){
@@ -318,8 +361,8 @@ public class Mailbox extends ArrayList<Email>{
                             System.out.println("M – Move email\nD – Delete email\nV – View email contents\nSA – Sort by subject line in ascending order\nSD – Sort by subject line in descending order\nDA – Sort by date in ascending order\nDD – Sort by date in descending order\nR – Return to mailbox");
                             System.out.print("Enter a user option: ");
                             sub_menu_option = in.next();
-                            break;
                         }
+                        break;
                     case 'T':
                         mailbox.trash.toString();
                         System.out.println("M – Move email\nD – Delete email\nV – View email contents\nSA – Sort by subject line in ascending order\nSD – Sort by subject line in descending order\nDA – Sort by date in ascending order\nDD – Sort by date in descending order\nR – Return to mailbox");
@@ -393,8 +436,8 @@ public class Mailbox extends ArrayList<Email>{
                             System.out.println("M – Move email\nD – Delete email\nV – View email contents\nSA – Sort by subject line in ascending order\nSD – Sort by subject line in descending order\nDA – Sort by date in ascending order\nDD – Sort by date in descending order\nR – Return to mailbox");
                             System.out.print("Enter a user option: ");
                             sub_menu_option = in.next();
-                            break;
                         }
+                        break;
 
                     default:
                         break;
@@ -405,6 +448,7 @@ public class Mailbox extends ArrayList<Email>{
 
 
             }
+        System.out.println("Program successfully exited and mailbox saved.");
 
     }
 }
