@@ -1,7 +1,9 @@
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 
-public class Email implements Serializable, Comparable {
+public class Email implements Serializable{
     private String to;
     private String cc;
     private String bcc;
@@ -66,17 +68,39 @@ public class Email implements Serializable, Comparable {
         this.timestamp = timestamp;
     }
 
-    public int compareTo(Object o){
-        Email otherEmail = (Email)o;
+    public static Comparator<Email> bySubjectAscending=new Comparator<>(){
+        public int compare(Email one, Email two){
+            String emailOne = one.getSubject().toLowerCase();
+            String emailTwo = two.getSubject().toLowerCase();
+            return emailOne.compareTo(emailTwo);
+        }
+    };
 
-        if(this.getTimestamp() == otherEmail.getTimestamp()){
-            return 0;
+    public static Comparator<Email> bySubjectDescending=new Comparator<>(){
+        public int compare(Email one, Email two){
+            String emailOne = one.getSubject().toLowerCase();
+            String emailTwo = two.getSubject().toLowerCase();
+            return emailTwo.compareTo(emailOne);
         }
-        else if(this.getTimestamp().after(otherEmail.getTimestamp())){
-            return 1;
+    };
+
+    public static Comparator<Email> byDateAscending=new Comparator<>(){
+        public int compare(Email one, Email two){
+            return one.getTimestamp().compareTo(two.getTimestamp());
         }
-        else{
-            return -1;
+    };
+
+    public static Comparator<Email> byDateDescending=new Comparator<>(){
+        public int compare(Email one, Email two){
+            return two.getTimestamp().compareTo(one.getTimestamp());
         }
+    };
+
+    public void displayEmailContent(){
+        System.out.println("To:" + this.getTo());
+        System.out.println("CC: "+ this.getCc());
+        System.out.println("BCC: "+ this.getBcc());
+        System.out.println("Subject: "+ this.getSubject());
+        System.out.println(this.getBody());
     }
 }
