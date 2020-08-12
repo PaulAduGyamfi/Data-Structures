@@ -1,7 +1,7 @@
 import java.util.Scanner;
 /**
  * Paul Adu-Gyamfi
- * #111607347
+ *
  * paul.adu-gyamfi@stonybrook.edu
  *
  * CSE 214.R30
